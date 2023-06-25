@@ -1,0 +1,201 @@
+/* FONTS */
+
+/* Inter - Sans Serif */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* Lora - Serif */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,700&display=swap');
+
+/* Inconsolata - Mono */
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+
+/* RESET */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CUSTOM PROPERTIES */
+
+:root {
+  /* Colors */
+  --clr-dark-800: rgba(5, 5, 5, 1);
+  --clr-dark-700: rgba(31, 31, 31, 1);
+  --clr-dark-600: rgba(45, 45, 45, 1);
+  --clr-dark-500: rgba(58, 58, 58, 1);
+  --clr-dark-400: rgba(117, 117, 117, 1);
+
+  --clr-light-600: rgba(233, 233, 233, 1);
+  --clr-light-500: rgba(244, 244, 244, 1);
+  --clr-light-400: rgba(255, 255, 255, 1);
+
+  --clr-accent-primary: rgba(164, 69, 237, 1);
+  --clr-accent-secondary: rgba(255, 82, 82, 1);
+
+  /* Fonts */
+  --ft-family-sans: 'Inter', sans-serif;
+  --ft-family-serif: 'Lora', serif;
+  --ft-family-mono: 'Inconsolata', monospace;
+
+  /* Font-size - Mobile - behöver kontrollera detta så det stämmer */
+  --fs-heading-l: 2rem;
+  --fs-heading-m: 1.125rem;
+  --fs-heading-s: 1rem;
+  --fs-body-m: 1rem;
+  --fs-body-s: 0.875rem;
+
+  --line-height-body: 1.5rem;
+
+  /* Padding på samtliga sektioners sidor - i main container */
+  --section-padding: 1.5rem 1.5rem;
+}
+
+/* obs: kan behöva ändra breakpoints */
+@media screen and (min-width: 690px) {
+  :root {
+    /* Font-size - Desktop/Tablet */
+    --fs-heading-l: 4rem;
+    --fs-heading-m: 1.5rem;
+    --fs-heading-s: 1.25rem;
+    --fs-body-m: 1.125rem;
+
+    --section-padding: 2.5rem 1.5rem;
+  }
+}
+
+/* GENERAL STYLES */
+
+body {
+  /* Bg-clr + font family ska kunna ändras */
+  background-color: var(--clr-light-400);
+  font-family: var(--ft-family-sans);
+}
+
+.main-container {
+  max-width: 690px;
+  margin: 0 auto;
+  padding: var(--section-padding);
+}
+
+/* HEADER */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px; /* höjd som logo */
+}
+
+.header__alternatives-container {
+  display: flex;
+  height: 100%;
+}
+
+.header__font-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  position: relative;
+
+  padding: 0 1rem 0 0;
+
+  border-right: 1px solid var(--clr-light-600);
+
+  /* border: 1px solid black; */
+}
+
+.header__current-font {
+  font-size: var(--fs-body-s);
+  font-weight: 700;
+}
+
+.header__show-fonts-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.header__arrow-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.header__font-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+
+  width: max-content;
+  background-color: var(--clr-light-400);
+  padding: 1.5rem 3rem 1.5rem 1.5rem;
+  border-radius: 10px;
+
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+
+  transform: translateY(-250px);
+  transition: transform 0.4s ease-in-out;
+}
+
+.header__mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 0 0 0 1rem;
+}
+
+@media screen and (min-width: 690px) {
+  .header__current-font {
+    font-size: var(--fs-body-m);
+  }
+}
+
+/* MODE SWITCH */
+
+.header__checkbox {
+  display: none;
+}
+
+.header__switch {
+  display: block;
+  position: relative;
+
+  background-color: var(--clr-dark-400);
+  width: 40px;
+  height: 20px;
+  border-radius: 40px;
+  cursor: pointer;
+
+  transition: 0.2s ease-in-out;
+}
+
+.header__switch::before {
+  position: absolute;
+  content: '';
+  background-color: var(--clr-light-400);
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  margin: 3px;
+
+  transition: 0.2s ease-in-out;
+}
+
+.header__checkbox:checked + .header__switch {
+  background-color: var(--clr-accent-primary);
+}
+
+.header__checkbox:checked + .header__switch::before {
+  transform: translateX(20px);
+}
