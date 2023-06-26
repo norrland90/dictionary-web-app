@@ -18,7 +18,7 @@
         /></a>
         <div class="header__alternatives-container">
           <div class="header__font-selector">
-            <p class="header__current-font">Mono</p>
+            <p class="header__current-font">Sans Serif</p>
             <button class="header__show-fonts-btn">
               <svg
                 class="header__arrow-icon"
@@ -29,7 +29,7 @@
                 aria-labelledby="show-fonts"
                 role="img"
               >
-                <title id="show-fonts">Show Fonts</title>
+                <title id="show-fonts">Choose font</title>
                 <path
                   fill="none"
                   stroke="#A445ED"
@@ -39,10 +39,27 @@
               </svg>
             </button>
             <div class="header__font-card hidden">
-              <!-- Göra detta till buttons med ID -->
-              <p>Sans Serif</p>
-              <p>Serif</p>
-              <p>Mono</p>
+              <button
+                type="button"
+                class="header__font-btn header__font-btn--sans"
+                id="sans-btn"
+              >
+                Sans Serif
+              </button>
+              <button
+                type="button"
+                class="header__font-btn header__font-btn--serif"
+                id="serif-btn"
+              >
+                Serif
+              </button>
+              <button
+                type="button"
+                class="header__font-btn header__font-btn--mono"
+                id="mono-btn"
+              >
+                Mono
+              </button>
             </div>
           </div>
           <div class="header__mode-selector">
@@ -70,7 +87,39 @@
           </div>
         </div>
       </header>
-      <main></main>
+      <main>
+        <form class="form">
+          <div class="form__container">
+            <input
+              class="form__input"
+              type="text"
+              name="search-term"
+              id="search-term"
+            />
+            <button class="form__submit-btn">
+              <svg
+                class="form__search-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                aria-labelledby="submit"
+                role="img"
+              >
+                <title id="submit">Submit</title>
+                <path
+                  fill="none"
+                  stroke="#A445ED"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z"
+                />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </main>
     </div>
   </body>
 </html>

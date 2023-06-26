@@ -50,7 +50,7 @@
   --line-height-body: 1.5rem;
 
   /* Padding på samtliga sektioners sidor - i main container */
-  --section-padding: 1.5rem 1.5rem;
+  --section-padding: 1.5rem 0;
 }
 
 /* obs: kan behöva ändra breakpoints */
@@ -62,7 +62,7 @@
     --fs-heading-s: 1.25rem;
     --fs-body-m: 1.125rem;
 
-    --section-padding: 2.5rem 1.5rem;
+    --section-padding: 2.5rem 0; /* Kolla om jag faktiskt använder den bra i sektionerna senare - annars göra om */
   }
 }
 
@@ -77,7 +77,13 @@ body {
 .main-container {
   max-width: 690px;
   margin: 0 auto;
-  padding: var(--section-padding);
+  padding: 1.5rem 1.5rem;
+}
+
+@media screen and (min-width: 690px) {
+  .main-container {
+    padding: 2rem 1.5rem;
+  }
 }
 
 /* HEADER */
@@ -85,13 +91,15 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
+}
+
+.header__link {
+  display: flex;
   align-items: center;
-  height: 38px; /* höjd som logo */
 }
 
 .header__alternatives-container {
   display: flex;
-  height: 100%;
 }
 
 .header__font-selector {
@@ -104,8 +112,6 @@ body {
   padding: 0 1rem 0 0;
 
   border-right: 1px solid var(--clr-light-600);
-
-  /* border: 1px solid black; */
 }
 
 .header__current-font {
@@ -133,8 +139,8 @@ body {
   gap: 1rem;
 
   position: absolute;
-  top: 2.5rem;
-  right: 1rem;
+  top: 40px;
+  right: 16px;
 
   width: max-content;
   background-color: var(--clr-light-400);
@@ -143,8 +149,34 @@ body {
 
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 
-  transform: translateY(-250px);
-  transition: transform 0.4s ease-in-out;
+  transform: translateY(-200%);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.header__font-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: var(--fs-body-s);
+  text-align: left;
+}
+
+.header__font-btn:hover {
+  color: var(--clr-accent-primary);
+}
+
+.header__font-btn--sans {
+  font-family: var(--ft-family-sans);
+}
+
+.header__font-btn--serif {
+  font-family: var(--ft-family-serif);
+}
+
+.header__font-btn--mono {
+  font-family: var(--ft-family-mono);
 }
 
 .header__mode-selector {
@@ -157,6 +189,10 @@ body {
 
 @media screen and (min-width: 690px) {
   .header__current-font {
+    font-size: var(--fs-body-m);
+  }
+
+  .header__font-btn {
     font-size: var(--fs-body-m);
   }
 }
@@ -198,4 +234,56 @@ body {
 
 .header__checkbox:checked + .header__switch::before {
   transform: translateX(20px);
+}
+
+/* FORM */
+
+.form {
+  padding: var(--section-padding);
+}
+
+.form__container {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  gap: 1rem;
+
+  background-color: var(--clr-light-500);
+  border: 1px solid transparent;
+  border-radius: 16px;
+}
+
+.form__input {
+  background: none;
+  padding: 1em;
+  border: 0;
+
+  font-size: var(--fs-body-m);
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.form__input:focus {
+  outline: 0;
+}
+
+.form__container:has(.form__input:focus) {
+  border: 1px solid var(--clr-accent-primary);
+}
+
+.form__submit-btn {
+  background: none;
+  border: 0;
+  margin-right: 1em;
+  margin-top: 3px;
+
+  cursor: pointer;
+  font-size: var(--fs-body-m);
+}
+
+@media screen and (min-width: 690px) {
+  .form__input,
+  .form__submit-btn {
+    font-size: var(--fs-heading-s);
+  }
 }
