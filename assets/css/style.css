@@ -25,6 +25,7 @@
   --clr-dark-800: rgba(5, 5, 5, 1);
   --clr-dark-700: rgba(31, 31, 31, 1);
   --clr-dark-600: rgba(45, 45, 45, 1);
+  --clr-dark-600-transp: rgba(45, 45, 45, 0.25);
   --clr-dark-500: rgba(58, 58, 58, 1);
   --clr-dark-400: rgba(117, 117, 117, 1);
 
@@ -261,6 +262,18 @@ body {
   font-size: var(--fs-body-m);
   font-family: inherit;
   font-weight: 700;
+}
+
+.form__input::-webkit-input-placeholder {
+  color: var(--clr-dark-600-transp);
+}
+
+.form__input:-ms-input-placeholder {
+  color: var(--clr-dark-600-transp);
+}
+
+.form__input::placeholder {
+  color: var(--clr-dark-600-transp);
 }
 
 .form__input:focus {
