@@ -50,12 +50,12 @@
 
   --line-height-body: 1.5rem;
 
-  /* Padding på samtliga sektioners sidor - i main container */
+  /* Margin som används över hela sidan */
   --section-margin-primary: 2rem;
+  --section-margin-s: 1rem;
 }
 
-/* obs: kan behöva ändra breakpoints */
-@media screen and (min-width: 690px) {
+@media screen and (min-width: 740px) {
   :root {
     /* Font-size - Desktop/Tablet */
     --fs-heading-l: 4rem;
@@ -63,7 +63,8 @@
     --fs-heading-s: 1.25rem;
     --fs-body-m: 1.125rem;
 
-    --section-margin-primary: 2.5rem; /* Kolla om jag faktiskt använder den bra i sektionerna senare - annars göra om */
+    --section-margin-primary: 2.5rem;
+    --section-margin-s: 1.5rem;
   }
 }
 
@@ -76,7 +77,7 @@ body {
 }
 
 .main-container {
-  max-width: 690px;
+  max-width: 740px;
   margin: 0 auto;
   padding: 1.5rem 1.5rem;
 }
@@ -87,9 +88,19 @@ body {
   background-color: var(--clr-light-600);
 }
 
-@media screen and (min-width: 690px) {
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media screen and (min-width: 740px) {
   .main-container {
-    padding: 2rem 1.5rem;
+    padding: 3rem 1.5rem;
   }
 }
 
@@ -195,7 +206,7 @@ body {
   padding: 0 0 0 1rem;
 }
 
-@media screen and (min-width: 690px) {
+@media screen and (min-width: 740px) {
   .header__current-font {
     font-size: var(--fs-body-m);
   }
@@ -247,7 +258,6 @@ body {
 /* FORM */
 
 .form {
-  /* padding: var(--section-margin-primary); */
   margin-bottom: var(--section-margin-primary);
 }
 
@@ -344,38 +354,43 @@ body {
 
 .meaning__heading-container {
   display: flex;
+  align-items: center;
   gap: 2rem;
   margin-bottom: var(--section-margin-primary);
 }
 
 .meaning__heading {
   font-size: var(--fs-heading-m);
-  line-height: 0.5;
 }
 
 .meaning__subheading {
   font-size: var(--fs-heading-s);
   font-weight: 400;
   color: var(--clr-dark-400);
-  margin-bottom: 1rem;
+}
+
+.meaning__subheading--meaning {
+  margin-bottom: var(--section-margin-s);
 }
 
 .meaning__list {
-  margin-bottom: 2rem;
+  margin-bottom: var(--section-margin-primary);
   padding-left: 2rem;
+
   list-style: none;
 }
 
 .meaning__list-item {
   position: relative;
   margin-bottom: 1rem;
+
   font-size: var(--fs-body-m);
   color: var(--clr-dark-600);
   line-height: 1.5rem;
 }
 
 .meaning__list-example {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-size: var(--fs-body-m);
   color: var(--clr-dark-400);
   line-height: 1.5rem;
@@ -400,11 +415,19 @@ body {
   align-items: baseline;
 }
 
+.meaning__links-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+
 .meaning__link {
   color: var(--clr-accent-primary);
   text-decoration: none;
   font-weight: 700;
   font-size: var(--fs-heading-s);
+  width: max-content;
+  position: relative;
 }
 
 .meaning__link:hover {
@@ -414,18 +437,23 @@ body {
 /* SOURCE */
 
 .source {
-  margin-bottom: var(--section-margin-primary);
+  margin-bottom: var(--section-margin-s);
 }
 
 .source .horizontal-line {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--section-margin-s);
+}
+
+.source__main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .source__heading {
   font-size: var(--fs-body-s);
   font-weight: 400;
   text-decoration: underline;
-  margin-bottom: 0.75rem;
   color: var(--clr-dark-400);
 }
 
@@ -438,4 +466,16 @@ body {
 .source__link {
   font-size: var(--fs-body-s);
   color: var(--clr-dark-600);
+}
+
+@media screen and (min-width: 740px) {
+  .source__main-container {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+
+  .source__heading,
+  .source__link {
+    text-decoration: none;
+  }
 }
