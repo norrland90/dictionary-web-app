@@ -191,6 +191,7 @@ body.dark {
   font-weight: bold;
   font-size: var(--fs-body-s);
   text-align: left;
+  width: max-content;
 }
 
 .header__font-btn:hover {
