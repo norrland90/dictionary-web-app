@@ -1,3 +1,13 @@
+// Toggle dark/light mode
+const modeSwitch = document.querySelector('.header__switch');
+
+function toggleMode() {
+  document.body.classList.toggle('dark');
+}
+
+modeSwitch.addEventListener('click', toggleMode);
+
+// Show card with fonts
 const showFontsArrow = document.querySelector('.header__show-fonts-btn');
 
 // Rotate arrow + show font card on click
