@@ -1,4 +1,4 @@
-// Toggle dark/light mode
+// TOGGLE DARK/LIGHT MODE
 const modeSwitch = document.querySelector('.header__switch');
 
 function toggleMode() {
@@ -7,18 +7,14 @@ function toggleMode() {
 
 modeSwitch.addEventListener('click', toggleMode);
 
-// Show card with fonts and change fonts
+// SHOW/HIDE FONT CARD AND CHANGE FONT
 const showFontsArrow = document.querySelector('.header__show-fonts-btn');
 const fontCard = document.querySelector('.header__font-card');
 
-// Rotate arrow + show font card on click
-function onArrowClick() {
+function showHideFontCard() {
   const fontArrow = document.querySelector('.header__arrow-icon');
   fontArrow.classList.toggle('rotate');
-  toggleFontCard();
-}
 
-function toggleFontCard() {
   if (fontCard.classList.contains('hidden')) {
     fontCard.classList.remove('hidden');
     fontCard.style.transform = 'translateY(0)';
@@ -54,14 +50,15 @@ function changeCurrentFont(font) {
   }
 }
 
-// Vill gärna få att funka om man trycker utanför kortet - ej som nu när man trycker utanför font-selector-diven
+// Hide font card with click outside card
 function hideFontCardOnClickOutside(e) {
-  let element = e.target.closest('.header__font-selector');
-  if (!element && !fontCard.classList.contains('hidden')) {
-    onArrowClick();
+  const card = e.target.closest('.header__font-card');
+  const arrow = e.target.closest('.header__show-fonts-btn');
+  if (!card && !fontCard.classList.contains('hidden') && !arrow) {
+    showHideFontCard();
   }
 }
 
-showFontsArrow.addEventListener('click', onArrowClick);
+showFontsArrow.addEventListener('click', showHideFontCard);
 fontCard.addEventListener('click', changeFont);
 document.addEventListener('click', hideFontCardOnClickOutside);
