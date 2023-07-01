@@ -336,15 +336,50 @@ body.dark {
   font-size: var(--fs-heading-s);
 }
 
+.form__warning-paragraph {
+  color: var(--clr-accent-secondary);
+  line-height: 2;
+}
+
 /* Dark mode */
 .dark .form__container {
   background-color: var(--clr-dark-700);
+}
+
+.dark .form__input {
+  color: var(--clr-light-400);
 }
 
 .dark .form__input::-webkit-input-placeholder,
 .dark .form__input:-ms-input-placeholder,
 .dark .form__input::placeholder {
   color: var(--clr-light-400-transp);
+}
+
+/* NO RESULTS SECTION */
+
+.no-results {
+  margin-top: 6rem;
+  text-align: center;
+}
+.no-results i {
+  margin-bottom: 3rem;
+  font-size: 3rem;
+  color: var(--clr-accent-primary);
+}
+
+.no-results__heading {
+  margin-bottom: 1rem;
+  font-size: var(--fs-heading-s);
+}
+
+.no-results__paragraph {
+  color: var(--clr-dark-400);
+}
+
+/* Dark mode */
+.dark .no-results__heading {
+  color: var(--clr-light-400);
 }
 
 /* WORD SECTION */
@@ -370,14 +405,14 @@ body.dark {
 .word__play-btn {
   background: none;
   border: 0;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
-.word__play-svg:hover g circle {
+.hover .word__play-svg:hover g circle {
   opacity: 1;
 }
 
-.word__play-svg:hover path {
+.hover .word__play-svg:hover path {
   fill: var(--clr-light-400);
 }
 

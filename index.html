@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/2eb8bd0a18.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="assets/js/script.js" defer></script>
     <title>Dictionary Web App</title>
   </head>
@@ -94,8 +98,8 @@
             <input
               class="form__input"
               type="text"
-              name="search-term"
-              id="search-term"
+              name="query"
+              id="query"
               placeholder="Search for any word..."
             />
             <button class="form__submit-btn">
@@ -121,13 +125,15 @@
             </button>
           </div>
         </form>
+        <!-- <i class="fa-regular fa-face-frown fa-2xl"></i> -->
         <article>
           <section class="word">
             <div class="word__container">
               <h1 class="word__search-term">keyboard</h1>
               <p class="word__phonetic">/ˈkiːbɔːd/</p>
             </div>
-            <button type="button" class="word__play-btn">
+            <button type="button" class="word__play-btn" id="play" disabled>
+              <audio src="" id="audio"></audio>
               <svg
                 class="word__play-svg"
                 xmlns="http://www.w3.org/2000/svg"
