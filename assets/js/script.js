@@ -1,6 +1,19 @@
-// TOGGLE DARK/LIGHT MODE
+// VARIABLES
 const modeSwitch = document.querySelector('.header__switch');
 const form = document.querySelector('.form');
+const formInput = document.querySelector('.form__input');
+
+const showFontsArrow = document.querySelector('.header__show-fonts-btn');
+const fontArrow = document.querySelector('.header__arrow-icon');
+const fontCard = document.querySelector('.header__font-card');
+const currentFont = document.querySelector('.header__current-font');
+
+let wordSection = document.querySelector('.word');
+let playButton = document.querySelector('.word__play-btn');
+const articleElement = document.querySelector('.dictionary');
+const formContainer = document.querySelector('.form__container');
+
+// TOGGLE DARK/LIGHT MODE
 
 function toggleMode() {
   document.body.classList.toggle('dark');
@@ -9,10 +22,6 @@ function toggleMode() {
 modeSwitch.addEventListener('click', toggleMode);
 
 // SHOW/HIDE FONT CARD AND CHANGE FONT
-const showFontsArrow = document.querySelector('.header__show-fonts-btn');
-const fontArrow = document.querySelector('.header__arrow-icon');
-const fontCard = document.querySelector('.header__font-card');
-const currentFont = document.querySelector('.header__current-font');
 
 function showHideFontCard() {
   fontArrow.classList.toggle('rotate');
@@ -61,69 +70,55 @@ function hideFontCardOnClickOutside(e) {
 
 function onSubmit(e) {
   e.preventDefault();
-  const formInput = document.querySelector('.form__input');
+  resetForm();
+  resetPlayButton();
+  articleElement.innerHTML = '';
 
-  validateInput(formInput.value);
-
-  fetchAPIData(formInput.value);
+  if (validateInput(formInput.value)) {
+    fetchAPIData(formInput.value);
+  }
 }
 
 function validateInput(input) {
-  const articleElement = document.querySelector('article');
-  const formContainer = document.querySelector('.form__container');
   if (!input) {
-    articleElement.innerHTML = '';
     formContainer.style.border = '1px solid var(--clr-accent-secondary)';
     const warningParagraph = document.createElement('p');
     warningParagraph.classList.add('form__warning-paragraph');
     warningParagraph.innerText = "Whoops, can't be empty";
     form.appendChild(warningParagraph);
+    return false;
+  } else {
+    return true;
   }
 }
 
-form.addEventListener('submit', onSubmit);
-showFontsArrow.addEventListener('click', showHideFontCard);
-fontCard.addEventListener('click', changeFont);
-document.addEventListener('click', hideFontCardOnClickOutside);
+function resetForm() {
+  formContainer.style.border = '1px solid transparent';
+  const warningParagraph = document.querySelector('.form__warning-paragraph');
+  if (warningParagraph) {
+    warningParagraph.remove();
+  }
+}
 
 // FETCH DATA
 
-const wordSection = document.querySelector('.word');
-const playButton = document.querySelector('.word__play-btn');
-const articleElement = document.querySelector('article');
-
 async function fetchAPIData(searchTerm) {
-  resetPlayButton();
-
   const API_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
   const response = await fetch(`${API_URL}${searchTerm}`);
   const data = await response.json();
 
   if (response.ok) {
-    console.log(data);
-    addSearchTermToDOM(data[0].word, data[0].phonetics);
+    addWordSectionToDOM(data[0].word);
     addPhoneticsToDOM(data[0].phonetics);
+    addMeaningsToDOM(data[0].meanings);
+    addSourceToDOM(data[0].sourceUrls);
   } else {
-    console.log(data);
     noDefinitionsFound(data);
-    // Här ska det skrivas ut i DOM att inga data finns.
   }
-
-  // Call functions with data to add stuff
-
-  // console.log(data[0].word);
-  // console.log(data[0].phonetics[0]);
-  // data[0].meanings.forEach((item) => {
-  //   console.log(item.partOfSpeech);
-  //   console.log(item.definitions);
-  //   console.log(item.synonyms);
-  // });
 }
 
 function noDefinitionsFound(data) {
-  articleElement.innerHTML = '';
-
   const div = document.createElement('div');
   div.classList.add('no-results');
 
@@ -144,9 +139,44 @@ function noDefinitionsFound(data) {
   articleElement.appendChild(div);
 }
 
-function addSearchTermToDOM(word) {
-  // Behöver addera alla element var för sig
-  document.querySelector('.word__search-term').innerText = word;
+function addWordSectionToDOM(word) {
+  const section = document.createElement('section');
+  section.classList.add('word');
+  const wordContainer = document.createElement('div');
+  wordContainer.classList.add('word__container');
+  const searchTerm = document.createElement('h1');
+  searchTerm.classList.add('word__search-term');
+  searchTerm.innerText = word;
+  const phonetic = document.createElement('p');
+  phonetic.classList.add('word__phonetic');
+  const button = document.createElement('button');
+  button.setAttribute('type', 'button');
+  button.classList.add('word__play-btn');
+  button.setAttribute('id', 'play');
+  button.setAttribute('disabled', 'disabled');
+  button.innerHTML = `<audio src="" id="audio"></audio>
+  <svg
+    class="word__play-svg"
+    xmlns="http://www.w3.org/2000/svg"
+    width="75"
+    height="75"
+    viewBox="0 0 75 75"
+    aria-labelledby="play"
+    role="img"
+  >
+    <title id="play">Play</title>
+    <g fill="#A445ED" fill-rule="evenodd">
+      <circle cx="37.5" cy="37.5" r="37.5" opacity=".25" />
+      <path d="M29 27v21l21-10.5z" />
+    </g>
+  </svg>`;
+
+  button.addEventListener('click', playAudio);
+  wordContainer.appendChild(searchTerm);
+  wordContainer.appendChild(phonetic);
+  section.appendChild(wordContainer);
+  section.appendChild(button);
+  articleElement.appendChild(section);
 }
 
 function addPhoneticsToDOM(phonetics) {
@@ -154,7 +184,6 @@ function addPhoneticsToDOM(phonetics) {
   let audioURL = '';
   // Look for first one with both text and audio, else look for only text (don't want to combine a certain phonetic with the wrong audio)
   for (let item of phonetics) {
-    console.log(item);
     if (item.text && item.audio) {
       newWord = item.text;
       audioURL = item.audio;
@@ -182,6 +211,9 @@ function addPhoneticsToDOM(phonetics) {
 
   // Add audio to DOM and change some settings of button
   if (audioURL) {
+    wordSection = document.querySelector('.word');
+    playButton = document.querySelector('.word__play-btn');
+
     const audioElement = document.getElementById('audio');
     audioElement.src = audioURL;
 
@@ -189,6 +221,136 @@ function addPhoneticsToDOM(phonetics) {
     playButton.removeAttribute('disabled');
     playButton.style.cursor = 'pointer';
   }
+}
+
+function addMeaningsToDOM(meanings) {
+  meanings.forEach((item) => {
+    // Dela upp i mindre funktioner??
+
+    const partOfSpeech = item.partOfSpeech;
+    const definitionsArray = item.definitions;
+    const synonymsArray = item.synonyms;
+
+    // Sectionelement and headings
+    const section = document.createElement('section');
+    section.classList.add('meaning');
+
+    const headingContainer = document.createElement('div');
+    headingContainer.classList.add('meaning__heading-container');
+
+    const heading = document.createElement('h2');
+    heading.classList.add('meaning__heading');
+    heading.innerText = partOfSpeech;
+
+    const horizontalLine = document.createElement('div');
+    horizontalLine.classList.add('horizontal-line');
+    headingContainer.appendChild(heading);
+    headingContainer.appendChild(horizontalLine);
+    section.appendChild(headingContainer);
+
+    const subHeading = document.createElement('h3');
+    subHeading.classList.add(
+      'meaning__subheading',
+      'meaning__subheading--meaning'
+    );
+    subHeading.innerText = 'Meaning';
+    section.appendChild(subHeading);
+
+    // List
+    const list = document.createElement('ul');
+    list.classList.add('meaning__list');
+    definitionsArray.forEach((item) => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('meaning__list-item');
+      listItem.innerText = item.definition;
+      list.appendChild(listItem);
+      if (item.example) {
+        const listExample = document.createElement('p');
+        listExample.classList.add('meaning__list-example');
+        listExample.innerText = item.example;
+        list.appendChild(listExample);
+      }
+    });
+    section.appendChild(list);
+
+    // Synonyms
+    if (synonymsArray.length !== 0) {
+      const synonymsContainer = document.createElement('div');
+      synonymsContainer.classList.add('meaning__synonyms-container');
+      section.appendChild(synonymsContainer);
+      const synonymsSubHeading = document.createElement('h3');
+      synonymsSubHeading.classList.add(
+        'meaning__subheading',
+        'meaning__subheading--synonyms'
+      );
+      synonymsSubHeading.innerText = 'Synonyms';
+      synonymsContainer.appendChild(synonymsSubHeading);
+
+      const synonymsLinksContainer = document.createElement('div');
+      synonymsLinksContainer.classList.add('meaning__links-container');
+      synonymsArray.forEach((item) => {
+        const link = document.createElement('a');
+        link.setAttribute('href', '#');
+        link.classList.add('meaning__link');
+        link.innerText = item;
+        link.addEventListener('click', onSynonymClick);
+        synonymsLinksContainer.appendChild(link);
+      });
+      synonymsContainer.appendChild(synonymsLinksContainer);
+    }
+    articleElement.appendChild(section);
+  });
+}
+
+function onSynonymClick(e) {
+  formInput.value = e.target.innerText;
+  document.querySelector('.form__submit-btn').click();
+}
+
+function addSourceToDOM(source) {
+  const footerElement = document.createElement('footer');
+  footerElement.classList.add('source');
+  const horizontalLine = document.createElement('div');
+  horizontalLine.classList.add('horizontal-line');
+  footerElement.appendChild(horizontalLine);
+
+  const sourceMainContainer = document.createElement('div');
+  sourceMainContainer.classList.add('source__main-container');
+  footerElement.appendChild(sourceMainContainer);
+
+  const sourceHeading = document.createElement('h2');
+  sourceHeading.classList.add('source__heading');
+  sourceHeading.innerText = 'Source';
+  sourceMainContainer.appendChild(sourceHeading);
+
+  source.forEach((item) => {
+    const sourceLinkContainer = document.createElement('div');
+    sourceLinkContainer.classList.add('source__link-container');
+    sourceMainContainer.appendChild(sourceLinkContainer);
+
+    sourceLinkContainer.innerHTML = `<a href="${item}" target="_blank" class="source__link"
+  >${item}
+  <span class="sr-only">(opens in a new tab)</span></a
+>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="14"
+  height="14"
+  viewBox="0 0 14 14"
+  aria-hidden="true"
+  role="img"
+>
+  <path
+    fill="none"
+    stroke="#838383"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="1.5"
+    d="M6.09 3.545H2.456A1.455 1.455 0 0 0 1 5v6.545A1.455 1.455 0 0 0 2.455 13H9a1.455 1.455 0 0 0 1.455-1.455V7.91m-5.091.727 7.272-7.272m0 0H9m3.636 0V5"
+  />
+</svg>`;
+  });
+  articleElement.appendChild(footerElement);
 }
 
 function playAudio() {
@@ -203,4 +365,7 @@ function resetPlayButton() {
   // Ev. gömma knappen istället om det ej finns audio
 }
 
-playButton.addEventListener('click', playAudio);
+form.addEventListener('submit', onSubmit);
+showFontsArrow.addEventListener('click', showHideFontCard);
+fontCard.addEventListener('click', changeFont);
+document.addEventListener('click', hideFontCardOnClickOutside);
