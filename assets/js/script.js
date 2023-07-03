@@ -16,8 +16,27 @@ const formContainer = document.querySelector('.form__container');
 // TOGGLE DARK/LIGHT MODE
 
 function toggleMode() {
-  document.body.classList.toggle('dark');
+  if (document.body.classList.contains('dark')) {
+    document.body.classList.remove('dark');
+    localStorage.setItem('mode', 'light');
+  } else {
+    document.body.classList.add('dark');
+    localStorage.setItem('mode', 'dark');
+  }
 }
+
+function initApp() {
+  // Get mode from local storage
+  const currentMode = localStorage.getItem('mode');
+  if (currentMode === 'dark') {
+    document.body.classList = 'dark';
+  }
+
+  // Get font from local storage
+  const currentFont = localStorage.getItem('font');
+  changeCurrentFont(currentFont);
+}
+initApp();
 
 modeSwitch.addEventListener('click', toggleMode);
 
@@ -50,12 +69,15 @@ function changeCurrentFont(font) {
   if (font === 'sans') {
     document.body.style.fontFamily = 'var(--ft-family-sans)';
     currentFont.innerText = 'Sans Serif';
+    localStorage.setItem('font', 'sans');
   } else if (font === 'serif') {
     document.body.style.fontFamily = 'var(--ft-family-serif)';
     currentFont.innerText = 'Serif';
+    localStorage.setItem('font', 'serif');
   } else {
     document.body.style.fontFamily = 'var(--ft-family-mono)';
     currentFont.innerText = 'Mono';
+    localStorage.setItem('font', 'mono');
   }
 }
 
