@@ -152,7 +152,7 @@ function addWordSectionToDOM(word) {
   const button = document.createElement('button');
   button.setAttribute('type', 'button');
   button.classList.add('word__play-btn');
-  button.setAttribute('id', 'play');
+  button.setAttribute('id', 'play-btn');
   button.setAttribute('disabled', 'disabled');
   button.innerHTML = `<audio src="" id="audio"></audio>
   <svg
