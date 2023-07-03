@@ -13,18 +13,7 @@ let playButton = document.querySelector('.word__play-btn');
 const articleElement = document.querySelector('.dictionary');
 const formContainer = document.querySelector('.form__container');
 
-// TOGGLE DARK/LIGHT MODE
-
-function toggleMode() {
-  if (document.body.classList.contains('dark')) {
-    document.body.classList.remove('dark');
-    localStorage.setItem('mode', 'light');
-  } else {
-    document.body.classList.add('dark');
-    localStorage.setItem('mode', 'dark');
-  }
-}
-
+// Init function to get mode and font from local storage
 function initApp() {
   // Get mode from local storage
   const currentMode = localStorage.getItem('mode');
@@ -36,7 +25,18 @@ function initApp() {
   const currentFont = localStorage.getItem('font');
   changeCurrentFont(currentFont);
 }
-initApp();
+
+// TOGGLE DARK/LIGHT MODE
+
+function toggleMode() {
+  if (document.body.classList.contains('dark')) {
+    document.body.classList.remove('dark');
+    localStorage.setItem('mode', 'light');
+  } else {
+    document.body.classList.add('dark');
+    localStorage.setItem('mode', 'dark');
+  }
+}
 
 modeSwitch.addEventListener('click', toggleMode);
 
@@ -384,10 +384,11 @@ function resetPlayButton() {
   wordSection.classList.remove('hover');
   playButton.setAttribute('disabled', 'disabled');
   playButton.style.cursor = 'not-allowed';
-  // Ev. gömma knappen istället om det ej finns audio
 }
 
 form.addEventListener('submit', onSubmit);
 showFontsArrow.addEventListener('click', showHideFontCard);
 fontCard.addEventListener('click', changeFont);
 document.addEventListener('click', hideFontCardOnClickOutside);
+
+initApp();
